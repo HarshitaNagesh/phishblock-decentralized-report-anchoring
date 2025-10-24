@@ -1,0 +1,40 @@
+// This is your Prisma schema file
+// Learn more: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            Int      @id @default(autoincrement())
+  walletAddress String   @unique
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  reports       Report[]
+
+  @@map("users")
+}
+
+model Report {
+  id              Int      @id @default(autoincrement())
+  reportType      String   // "phishing_url" or "scam_wallet"
+  targetValue     String   // The URL or wallet address being reported
+  description     String
+  reportHash      String   @unique // bytes32 hash for on-chain anchoring
+  isAnchoredOnChain Boolean @default(false)
+  onChainTxHash   String?  // Transaction hash when anchored
+  reporterId      Int
+  reporter        User     @relation(fields: [reporterId], references: [id])
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([reportType])
+  @@index([targetValue])
+  @@index([reportHash])
+  @@map("reports")
+}
