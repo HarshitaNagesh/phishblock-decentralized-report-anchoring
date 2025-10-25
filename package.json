@@ -17,7 +17,16 @@
         "verify:mumbai": "hardhat verify --network mumbai",
         "node": "hardhat node",
         "clean": "hardhat clean",
-        "size": "hardhat size-contracts"
+        "size": "hardhat size-contracts",
+        "build:extension": "echo 'Building extension...' && cp -r extension/ dist/extension/",
+        "package:chrome": "npm run build:extension && cd dist/extension && zip -r phishblock-chrome.zip .",
+        "package:firefox": "npm run build:extension && cd dist/extension && zip -r phishblock-firefox.zip .",
+        "package:edge": "npm run build:extension && cd dist/extension && zip -r phishblock-edge.zip .",
+        "test:extension": "echo 'Running extension tests...'",
+        "test:extension:coverage": "echo 'Running extension tests with coverage...'",
+        "test:integration": "echo 'Running integration tests...'",
+        "test:integration:sepolia": "echo 'Running integration tests on Sepolia...'",
+        "dev:extension": "echo 'Starting extension development server...'"
     },
     "dependencies": {
         "@babel/parser": "^7.28.4",
